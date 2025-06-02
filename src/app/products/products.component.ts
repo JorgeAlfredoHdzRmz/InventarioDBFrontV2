@@ -143,6 +143,7 @@ cerrarModal() {
     .then(data => {
       this.products =  data.products;
       this.totalPages = data.totalPages
+      console.log(data)
     })
     .catch(error => {
       console.error("error: ", error);
@@ -344,4 +345,12 @@ export interface Product {
   productName: string;
   productSKU: string;
   registrationDate: string;
+}
+
+export interface PaginationProduct{
+  products: Product[];
+  totalItems: number,
+  pageNumber: number,
+  pageSize: number,
+  totalPages: number
 }
