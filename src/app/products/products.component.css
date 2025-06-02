@@ -158,3 +158,31 @@ h1,h2,h3{
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
     text-decoration-color: blue;
 }
+
+tfoot{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    /* border: solid 5px rgb(0, 8, 255); */
+}
+
+#exampleSelect{
+    width: 6% !important;
+    height: 50px !important;
+    margin-left: 10px;
+}
+
+#footertext{
+    letter-spacing: 2px;
+     height: 50px !important;
+     padding-left: 20px;
+     padding-right: 20px;
+     /* border: solid 5px rgb(255, 0, 0); */
+     display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+}

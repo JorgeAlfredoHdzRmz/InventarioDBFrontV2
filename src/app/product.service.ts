@@ -2,6 +2,26 @@ import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
 
+export interface Products {
+  activeStatus: number;
+  availableStock: number;
+  categoryID: number;
+  categoryName: string;
+  price: number;
+  productId: number;
+  productName: string;
+  productSKU: string;
+  registrationDate: string;
+}
+
+export interface PaginationProduct{
+  products: Products[];
+  totalItems: number,
+  pageNumber: number,
+  pageSize: number,
+  totalPages: number
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -32,11 +52,13 @@ export class ProductService {
   }
 
   //para obtener todos los productos
-  async getAllProducts(filter: string = ''): Promise<any>{
+  async getAllProducts(filter: string = '',pageNumber: number = 0, pageSize: number = 0): Promise<PaginationProduct>{
     const token = this.getToken();
 
     const dto = {
-      filter: filter
+      filter: filter,
+      pageNumber: pageNumber,
+      pageSize: pageSize
     };
 
     try {
@@ -46,7 +68,7 @@ export class ProductService {
           },
         });
         console.log(response.data);
-        return response.data.products;
+        return response.data;
     } catch (error) {
         console.error('Error fetching products', error);
         throw error;

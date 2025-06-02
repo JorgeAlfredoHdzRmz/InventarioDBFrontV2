@@ -172,6 +172,22 @@
                         </tr>
                     </tbody>
                     </table>
+                    <tfoot>
+                        <button class="btn btn-primary rounded-circle" style="width: 50px; height: 50px;" (click)="goToPreviousPage()">
+                            <i class="fs-4 bi-caret-left-square-fill"></i>
+                        </button>
+                        <p class="text-body" id="footertext">Pagina: <strong>{{this.pageNumber}}</strong> de <strong>{{this.totalPages}}</strong></p>
+                        <button class="btn btn-primary rounded-circle" style="width: 50px; height: 50px;" (click)="goToNextPage()">
+                            <i class="fs-4 bi-caret-right-square-fill"></i>
+                        </button>
+                        <select class="form-select" name="pagesizeselect" id="exampleSelect" [(ngModel)]="pageSize" (ngModelChange)="loadProducts()">
+                            <option value="10" selected>10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                        </select>
+                    </tfoot>
                 </div>
             </div>
         </div>

@@ -55,6 +55,9 @@ export class ProductsComponent {
 
   modalInstance: any;
   filter = '';
+  pageNumber = 1;
+  pageSize = 10;
+  totalPages = 0;
   Front_UserName = '';
   Front_RoleName = '';
   // products: {
@@ -136,13 +139,28 @@ cerrarModal() {
 
 
   loadProducts(){
-    this.productService.getAllProducts(this.filter)
+    this.productService.getAllProducts(this.filter,this.pageNumber,this.pageSize)
     .then(data => {
-      this.products = data;
+      this.products =  data.products;
+      this.totalPages = data.totalPages
     })
     .catch(error => {
       console.error("error: ", error);
     })
+  }
+
+  goToNextPage(){
+    if (this.pageNumber >= 0 && this.pageNumber < this.totalPages){
+        this.pageNumber = this.pageNumber + 1;
+        this.loadProducts();
+    }
+  }
+
+  goToPreviousPage(){
+    if (this.pageNumber >= 2){
+        this.pageNumber = this.pageNumber - 1;
+        this.loadProducts();
+    }
   }
 
   hasRole(roles: string[]): boolean {
