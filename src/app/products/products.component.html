@@ -1,0 +1,227 @@
+
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<header>
+    <div class="applogo">
+        <H1>Inventory Management</H1>
+    </div>
+    <div class="contlogo">
+        <div class="contimage">
+            <img src="https://cdn-icons-png.flaticon.com/512/1177/1177568.png" alt="logo" class="logo">
+        </div>
+        <div class="contuser">
+            <h2>{{this.Front_UserName}}</h2>
+            <h3>{{this.Front_RoleName}}</h3>    
+        </div>
+    </div>
+</header>
+<body>
+    <div class="container-fluid">
+    <div class="row flex-nowrap">
+        <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                <!-- <a href="#" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                    <span class="fs-5 d-none d-sm-inline">Menu</span>
+                </a> -->
+                <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
+                    <li class="nav-item">
+                        
+                        <a href="#" class="nav-link align-middle px-0" (click)="goToAdminMenu($event)" *ngIf="hasRole(['Employee', 'Super Administrator', 'Administrator'])">
+                            <i class="fs-4 bi-box-arrow-left"></i> <span class="ms-1 d-none d-sm-inline">Regresar</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link align-middle px-0" (click)="goToUsersPanel($event)" *ngIf="hasRole(['Super Administrator'])">
+                            <i class="fs-4 bi-person-vcard-fill"></i> <span class="ms-1 d-none d-sm-inline">Usuarios</span>
+                        </a>
+                        <a href="#submenu1" data-bs-toggle="collapse" class="nav-link px-0 align-middle" (click)="goToCategoriesPanel($event)"  *ngIf="hasRole(['Employee', 'Super Administrator', 'Administrator'])">
+                            <i class="fs-4 bi-tags-fill"></i> <span class="ms-1 d-none d-sm-inline">Categorias</span> </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link px-0 align-middle" *ngIf="hasRole(['Employee', 'Super Administrator', 'Administrator'])">
+                            <i class="fs-4 bi-bar-chart-steps"></i> <span class="ms-1 d-none d-sm-inline">Operaciones</span></a>
+                    </li>
+                    <li>
+                        <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle " *ngIf="hasRole(['Employee', 'Super Administrator', 'Administrator'])">
+                            <i class="fs-4 bi-gear-fill"></i><span class="ms-1 d-none d-sm-inline">Otras opciones</span></a>
+                        <a href="#submenu2" data-bs-toggle="collapse" class="nav-link px-0 align-middle " (click)="logout($event)" *ngIf="hasRole(['Employee', 'Super Administrator', 'Administrator'])">
+                            <i class="fs-4 bi-box-arrow-left"></i><span class="ms-1 d-none d-sm-inline">Cerrar Sesion</span></a>
+                    </li>
+                </ul>
+                <hr>
+            </div>
+        </div>
+        <div class="col py-3">
+            <div class="appbody">
+                <div class="headersubmenu">
+                    <p class="subheader">GESTION DE PRODUCTOS INVENTORY MANAGEMENT</p>
+                    <!-- <button type="button" class="btn btn-warning"><i class="bi bi-pencil-square"></button> -->
+                </div>
+                <div class="appoptions">
+                    <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Buscar Producto" [(ngModel)]="filter" (ngModelChange)="loadProducts()" aria-label="Recipient's productName" aria-describedby="button-addon2">
+                    <!-- <button class="btn btn-info" type="button" id="button-addon2">Buscar</button> -->
+                    </div>
+                    <div class="mb-3 d-flex gap-2">
+                    <button class="btn btn-success" type="button">
+                        <i class="bi bi-file-earmark-excel"></i> Exportar a Excel
+                    </button>
+                    <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#agregarProductoModal" > <!-- (click)="openModal()" -->
+                        <i class="bi bi-person-plus-fill"></i> Agregar Producto
+                    </button>
+                    </div>
+                    <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">RegistrationDate</th>
+                        <th scope="col">ActiveStatus</th>
+                        <th scope="col">Stock</th>
+                        <th scope="col">SKU</th>
+                        <th scope="col">CategoryName</th>
+                        <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let product of products">
+
+                        <th scope="row">{{ product.productId }}</th>
+                        
+                        <td *ngIf="editRowId === product.productId; else productNameReadOnly">
+                            <input [(ngModel)]="selectedProduct.productName" class="form-control" />
+                        </td>
+                        <ng-template #productNameReadOnly>
+                            <td (click)="goToProductDetail($event, product.productId)">{{ product.productName }}</td> <!-- cambiar a un component que redirija al detalle -->
+                        </ng-template>
+                        
+
+                        <td *ngIf="editRowId === product.productId; else productPriceReadOnly">
+                            <input [(ngModel)]="selectedProduct.price" type="number" class="form-control" />
+                        </td>
+                        <ng-template #productPriceReadOnly>
+                            <td class="link">{{ product.price }}</td>
+                        </ng-template>
+
+                        <th scope="row">{{ product.registrationDate }}</th>
+
+                        <td><div class="form-check form-switch">
+                            <input
+                                class="form-check-input"
+                                type="checkbox"
+                                role="switch"
+                                [checked]="product.activeStatus === 1"
+                                (change)="toggleStatus(product)"/>
+                            </div></td>
+
+                        <td *ngIf="editRowId === product.productId; else availableStockReadOnly">
+                            <input [(ngModel)]="FRONT_AddedStock" type="number" class="form-control" />
+                        </td>
+                        <ng-template #availableStockReadOnly>
+                            <td class="link">{{ product.availableStock }}</td>
+                        </ng-template>
+
+                        <!-- <th scope="row">{{ product.productSKU }}</th> -->
+                        
+                        <td *ngIf="editRowId === product.productId; else productSKUReadOnly">
+                            <input [(ngModel)]="selectedProduct.productSKU" type="text" class="form-control" />
+                        </td>
+                        <ng-template #productSKUReadOnly>
+                            <td class="link">{{ product.productSKU }}</td>
+                        </ng-template>
+
+                        <td>
+                        <ng-container *ngIf="editRowId === product.productId && editMode === 1; else readOnly">
+                         <div class="input-group mb-3">
+                            <select class="form-select" name="categorySelect" id="exampleSelect" [(ngModel)]="selectedProduct.categoryID" required>
+                                <option value="" selected disabled hidden>Elige una categoria</option>
+                                <option *ngFor="let category of categories" [ngValue]="category.CategoryID">{{ category.CategoryName }}</option> 
+                            </select>
+                            </div>
+
+                        </ng-container>
+                        <ng-template #readOnly>
+                            {{ product.categoryName }}
+                        </ng-template>
+                        </td>
+                        <td>
+                            <button *ngIf="editRowId != product.productId" type="button" class="btn btn-warning" (click)="goToFormMode(product.productId)">
+                            <i class="bi bi-pencil-square"></i>
+                            </button>
+                             <button
+                                *ngIf="editRowId === product.productId && editMode === 1"
+                                type="button"
+                                class="btn btn-success ms-1"
+                                (click)="saveProduct()"
+                                >
+                                <i class="bi bi-check-lg"></i>
+                            </button>
+                            <button
+                                *ngIf="editRowId === product.productId && editMode === 1"
+                                type="button"
+                                class="btn btn-secondary ms-1"
+                                (click)="cancelEdit()"
+                                >
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<!-- Modal para agregar usuario -->
+<div class="modal fade" id="agregarProductoModal" tabindex="-1" aria-labelledby="agregarProductoModalLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form (ngSubmit)="onSubmit()" #userForm="ngForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="agregarProductoModalLabel">Agregar Producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="userName" class="form-label">Nombre de Producto</label>
+            <input type="text" class="form-control" id="productName" [(ngModel)]="registerProduct.productName" name="productName" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="userName" class="form-label">Precio</label>
+            <input type="number" class="form-control" id="price" [(ngModel)]="registerProduct.price" name="price" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="userName" class="form-label">Stock Inicial</label>
+            <input type="number" class="form-control" id="availableStock" [(ngModel)]="registerProduct.availableStock" name="availableStock" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="userName" class="form-label">SKU Del producto</label>
+            <input type="text" class="form-control" id="productSKU" [(ngModel)]="registerProduct.productSKU" name="productSKU" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="role" class="form-label">Categoria</label>
+            <select class="form-select" id="role" [(ngModel)]="registerProduct.categoryID" name="roleID" required>
+              <option *ngFor="let category of categories" [value]="category.CategoryID">{{ category.CategoryName }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">Registrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-..." crossorigin="anonymous"></script>
