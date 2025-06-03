@@ -35,6 +35,7 @@ export class ProductService {
 
   private stockURL = 'https://azinventariodbapi.azurewebsites.net/api/v1/Products/add-stock';
   private changeCategoryURL = 'https://azinventariodbapi.azurewebsites.net/api/v1/Products/changeCategory';
+  private importProdURL = 'https://azinventariodbapi.azurewebsites.net/api/v1/Products/importProducts'
 
   //para registrar un nuevo producto
   registerProduct(productRequest: ProductRegisterDTO): Promise<any> {
@@ -181,6 +182,24 @@ async changeCategory(productId: number, updatedData: ChangeCategoryDTO): Promise
     throw error;
   }
 }
+
+async importProducts(archivoExcel: File) {
+  const token = localStorage.getItem('token'); 
+    const formData = new FormData();
+    formData.append('archivoExcel', archivoExcel, archivoExcel.name);
+
+    try {
+    const response = await axios.patch(`${this.importProdURL}`, formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    // return response.data;
+  } catch (error) {
+    console.error('Error importing products', error);
+    throw error;
+  }
+  }
 
 }
 

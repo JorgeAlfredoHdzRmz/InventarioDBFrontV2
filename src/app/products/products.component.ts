@@ -54,6 +54,7 @@ export class ProductsComponent {
    };
 
   modalInstance: any;
+  selectedFile: File | null = null;
   filter = '';
   pageNumber = 1;
   pageSize = 10;
@@ -137,6 +138,41 @@ cerrarModal() {
   }
 }
 
+onFileSelected(event: any) {
+  this.selectedFile = event.target.files[0];
+}
+
+uploadFile() {
+  if (!this.selectedFile) return;
+  this.loadingService.showLoading("Importando...")
+  this.productService.importProducts(this.selectedFile)
+    .then(() => {
+      this.loadingService.hideLoading();
+      Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: 'Productos agregados exitosamente',
+                showConfirmButton: false,
+                timer: 800,
+                width: '400px'  // <-- Aquí defines el ancho que quieres
+              });
+              this.selectedFile = null;
+              this.loadProducts();
+    })
+    .catch(error => {
+            Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Hubo un error inesperado, intentalo nuevamente',
+            showConfirmButton: false,
+            timer: 800,
+            width: '400px'
+            });
+            this.selectedFile = null;
+            this.loadProducts();
+          });
+
+}
 
   loadProducts(){
     this.productService.getAllProducts(this.filter,this.pageNumber,this.pageSize)

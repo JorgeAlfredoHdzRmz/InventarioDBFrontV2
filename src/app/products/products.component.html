@@ -257,12 +257,12 @@
         <div class="modal-body">
           <div class="mb-3">
             <label for="userName" class="form-label">Agregar archivo</label>
-            <input type="file" class="form-control" id="productFile" name="productFile" required>
+            <input type="file" class="form-control" id="productFile" name="productFile" (change)="onFileSelected($event)" required>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">Registrar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid" (click)="uploadFile()">Importar</button>
         </div>
       </form>
     </div>
