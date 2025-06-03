@@ -249,7 +249,7 @@
 <div class="modal fade" id="importarproductosModal" tabindex="-1" aria-labelledby="importarproductosModalLabel">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form #userForm="ngForm">
+      <form (ngSubmit)="uploadFile()" #userForm="ngForm">
         <div class="modal-header">
           <h5 class="modal-title" id="importarproductosModalLabel">Importar Productos</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
@@ -262,7 +262,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid" (click)="uploadFile()">Importar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">Importar</button>
         </div>
       </form>
     </div>
