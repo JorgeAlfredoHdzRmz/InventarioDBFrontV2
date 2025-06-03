@@ -189,7 +189,7 @@ async importProducts(archivoExcel: File) {
     formData.append('archivoExcel', archivoExcel, archivoExcel.name);
 
     try {
-    const response = await axios.patch(`${this.importProdURL}`, formData, {
+    const response = await axios.post(`${this.importProdURL}`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
