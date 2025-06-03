@@ -72,7 +72,7 @@
                     <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#agregarProductoModal" > <!-- (click)="openModal()" -->
                         <i class="bi bi-person-plus-fill"></i> Agregar Producto
                     </button>
-                     <button class="btn btn-primary" type="button"> <!-- (click)="openModal()" -->
+                     <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#importarproductosModal"> <!-- (click)="openModal()" -->
                         <i class="bi bi-person-plus-fill"></i> Agregar Productos Masivos
                     </button>
                     </div>
@@ -233,6 +233,31 @@
             <select class="form-select" id="role" [(ngModel)]="registerProduct.categoryID" name="roleID" required>
               <option *ngFor="let category of categories" [value]="category.CategoryID">{{ category.CategoryName }}</option>
             </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">Registrar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="importarproductosModal" tabindex="-1" aria-labelledby="importarproductosModalLabel">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form #userForm="ngForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="importarproductosModalLabel">Importar Productos</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="userName" class="form-label">Agregar archivo</label>
+            <input type="file" class="form-control" id="productFile" name="productFile" required>
           </div>
         </div>
         <div class="modal-footer">
