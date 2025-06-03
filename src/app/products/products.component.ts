@@ -138,6 +138,21 @@ cerrarModal() {
   }
 }
 
+cerrarModalMasivo() {
+  const modalEl = document.getElementById('importarproductosModal');
+  if (modalEl) {
+    const modal = bootstrap.Modal.getInstance(modalEl);
+    if (modal) {
+      modal.hide();
+      // Mover el foco al botón que abrió el modal
+      const btnOpen = document.querySelector('button[data-bs-target="#importarproductosModal"]');
+      if (btnOpen instanceof HTMLElement) {
+        btnOpen.focus();
+      }
+    }
+  }
+}
+
 onFileSelected(event: any) {
   this.selectedFile = event.target.files[0];
 }
@@ -156,6 +171,7 @@ uploadFile() {
                 timer: 800,
                 width: '400px'  // <-- Aquí defines el ancho que quieres
               });
+              this.cerrarModalMasivo();
               this.selectedFile = null;
               this.loadProducts();
     })
@@ -228,6 +244,11 @@ uploadFile() {
                 timer: 800,
                 width: '400px'  // <-- Aquí defines el ancho que quieres
               });
+              this.registerProduct.productName = '';
+              this.registerProduct.price = 0,
+              this.registerProduct.availableStock = 0,
+              this.registerProduct.productSKU = '',
+              this.registerProduct.categoryID = 0
               this.cerrarModal();
               this.loadProducts();
     })
